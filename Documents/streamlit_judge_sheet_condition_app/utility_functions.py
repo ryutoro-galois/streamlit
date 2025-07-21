@@ -101,10 +101,11 @@ def rotate_image(img_pil):
 
 
 # name : convert_PIL_to_cv2
-def convert_PIL_to_cv2(img_pil):
+def convert_PIL_to_cv2(img_pil, is_rotate=False):
     
     # 回転
-    img_pil = rotate_image(img_pil)
+    if is_rotate:
+        img_pil = rotate_image(img_pil)
 
     # PIL画像をNumPy配列に変換
     np_array_img = np.array(img_pil)
