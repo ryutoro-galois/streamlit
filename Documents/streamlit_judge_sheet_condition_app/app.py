@@ -52,11 +52,14 @@ if uploaded_file is not None:
     output_base64_image = dict_check_result["dict_output_base64_image"][annotation_type]
     output_image = base64_to_cv(output_base64_image)
 
-    st.image(output_image, caption="output image", use_container_width=False)
+    # NumPy配列 (OpenCV形式) をPillow形式に変換
+    output_image_PIL = Image.fromarray(cv.cvtColor(output_image, cv.COLOR_BGR2RGB))
+
+    st.image(output_image_PIL, caption="output image", use_container_width=False)
 
     # ダウンロードボタンを追加
     buf = io.BytesIO()
-    output_image.save(buf, format="PNG")
+    output_image_PIL.save(buf, format="PNG")
     st.download_button(
         label="画像をダウンロード",
         data=buf.getvalue(),
