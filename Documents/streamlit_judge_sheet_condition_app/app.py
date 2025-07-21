@@ -27,6 +27,19 @@ def base64_to_cv(image_base64):
 
 # Streamlitアプリのセットアップ
 st.title("段ボールシート状態チェック")
+
+# test_name
+test_name = st.selectbox('select test name', ['EDGE_FOLDING_CHECK', 'JOINT_GAP_SIZE_CHECK'], index=1)
+
+# Flute
+Flute = st.selectbox('select Flute', ['A', 'AB', 'CB', 'B', 'C'], index=None)
+
+# judge_parity
+judge_parity = st.selectbox('select judge parity', ['left', 'right'], index=1)
+
+# annotation_type
+annotation_type = st.selectbox('select annotation type', ['1_edge_dots', '2_segmented_lines', '3_edge_dots_and_segmented_lines'], index=None)
+
 uploaded_file = st.file_uploader("Please upload an image (jpg, jpeg, png)", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
@@ -73,15 +86,14 @@ if uploaded_file is not None:
     buf = io.BytesIO()
     output_image_PIL.save(buf, format="PNG")
     st.download_button(
-        label="画像をダウンロード",
+        label="Download image",
         data=buf.getvalue(),
-        file_name="output_image.png",
+        file_name=output_name,
         mime="image/png"
     )
 
 # ポートとアドレスの明確な指定
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 8080))  # 環境変数PORTを使用。デフォルト8080
     st._config.set_option('server.port', port)  # ポート設定
     st._config.set_option('server.address', '0.0.0.0')  # 外部からもアクセス可能にする
