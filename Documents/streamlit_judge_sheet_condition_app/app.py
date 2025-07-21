@@ -37,7 +37,7 @@ Flute = st.selectbox('select Flute', ['A', 'AB', 'CB', 'B', 'C'], index=0)
 # BoxesPerBD
 min_BoxesPerBD = 5
 max_BoxesPerBD = 30
-BoxesPerBD = st.selectbox("Select BoxesPerBD:",list(range(min_BoxesPerBD, max_BoxesPerBD+1)), index=5)
+BoxesPerBD = st.selectbox("select BoxesPerBD ",list(range(min_BoxesPerBD, max_BoxesPerBD+1)), index=5)
 
 # judge_parity
 judge_parity = st.selectbox('select judge parity', ['left', 'right'], index=0)
@@ -49,73 +49,76 @@ is_output_annotated_image = st.radio("annotate image", (True, False), index=0)
 if is_output_annotated_image == True:
     # annotation_type
     annotation_type = st.selectbox(
-        'Select annotation type',
-        ['1_edge_dots', '2_segmented_lines', '3_edge_dots_and_segmented_lines'],
-        index=0
+        'select image annotation type', ['1_edge_dots', '2_segmented_lines', '3_edge_dots_and_segmented_lines'],index=0
     )
     
-uploaded_file = st.file_uploader("Please upload an image (jpg, jpeg, png)", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader(
+    "Please upload an image (jpg, jpeg, png)", 
+    type=["jpg", "jpeg", "png"]
+)
 
-if uploaded_file is not None:
-    img_pil = Image.open(uploaded_file)
-    img_pil = rotate_image(img_pil)
-    file_name = uploaded_file.name
-    file_name_0, file_ext = os.path.splitext(file_name)
-    str_caption_input = f"input image: [ {file_name} ]"
-    # display uploaded image
-    st.image(img_pil, caption=str_caption_input, use_container_width=False)
-    # convert cv
-    img_cv = convert_PIL_to_cv2(img_pil)
+# 実行ボタン
+if st.button("Run Processing"):
+    if uploaded_file is not None:
+        img_pil = Image.open(uploaded_file)
+        img_pil = rotate_image(img_pil)
+        file_name = uploaded_file.name
+        file_name_0, file_ext = os.path.splitext(file_name)
+        str_caption_input = f"input image: [ {file_name} ]"
+        # display uploaded image
+        st.image(img_pil, caption=str_caption_input, use_container_width=False)
+        # convert cv
+        img_cv = convert_PIL_to_cv2(img_pil)
 
-    # dict_input
-    #dict_input = {
-    #    "test_name": "EDGE_FOLDING_CHECK", 
-    #    "Flute": "B",
-    #    "BoxesPerBD": 10,
-    #    "judge_parity": "left",
-    #    "is_output_annotated_image": True,
-    #    "annotation_type": "1_edge_dots",
-    #    "is_debug_print": True
-    #}
+        # dict_input
+        #dict_input = {
+        #    "test_name": "EDGE_FOLDING_CHECK", 
+        #    "Flute": "B",
+        #    "BoxesPerBD": 10,
+        #    "judge_parity": "left",
+        #    "is_output_annotated_image": True,
+        #    "annotation_type": "1_edge_dots",
+        #    "is_debug_print": True
+        #}
 
-    # dict_input
-    dict_input = {
-        "test_name": test_name,
-        "Flute": Flute,
-        "BoxesPerBD": int(BoxesPerBD),
-        "judge_parity": judge_parity,
-        "is_output_annotated_image": bool(is_output_annotated_image),
-        "annotation_type": annotation_type,
-        "is_debug_print": True
-    }
+        # dict_input
+        dict_input = {
+            "test_name": test_name,
+            "Flute": Flute,
+            "BoxesPerBD": int(BoxesPerBD),
+            "judge_parity": judge_parity,
+            "is_output_annotated_image": bool(is_output_annotated_image),
+            "annotation_type": annotation_type,
+            "is_debug_print": True
+        }
 
-    # judge_sheet_condition
-    dict_check_result = judge_sheet_condition(img_cv, dict_input)
+        # judge_sheet_condition
+        dict_check_result = judge_sheet_condition(img_cv, dict_input)
 
-    annotation_type = "1_edge_dots"
-    output_base64_image = dict_check_result["dict_output_base64_image"][annotation_type]
-    output_image = base64_to_cv(output_base64_image)
+        annotation_type = "1_edge_dots"
+        output_base64_image = dict_check_result["dict_output_base64_image"][annotation_type]
+        output_image = base64_to_cv(output_base64_image)
 
-    # datetime
-    tdatetime = dt.now(timezone('Asia/Tokyo'))
-    datetime_str = tdatetime.strftime('%Y%m%d_%H%M%S')
-    output_name = f"{file_name_0}_[{annotation_type}]_{datetime_str}.png"
-    str_caption_output = f"output image: [ {output_name} ]"
+        # datetime
+        tdatetime = dt.now(timezone('Asia/Tokyo'))
+        datetime_str = tdatetime.strftime('%Y%m%d_%H%M%S')
+        output_name = f"{file_name_0}_[{annotation_type}]_{datetime_str}.png"
+        str_caption_output = f"output image: [ {output_name} ]"
 
-    # NumPy配列 (OpenCV形式) をPillow形式に変換
-    output_image_PIL = Image.fromarray(cv.cvtColor(output_image, cv.COLOR_BGR2RGB))
+        # NumPy配列 (OpenCV形式) をPillow形式に変換
+        output_image_PIL = Image.fromarray(cv.cvtColor(output_image, cv.COLOR_BGR2RGB))
 
-    st.image(output_image_PIL, caption=str_caption_output, use_container_width=False)
+        st.image(output_image_PIL, caption=str_caption_output, use_container_width=False)
 
-    # ダウンロードボタンを追加
-    buf = io.BytesIO()
-    output_image_PIL.save(buf, format="PNG")
-    st.download_button(
-        label="Download image",
-        data=buf.getvalue(),
-        file_name=output_name,
-        mime="image/png"
-    )
+        # ダウンロードボタンを追加
+        buf = io.BytesIO()
+        output_image_PIL.save(buf, format="PNG")
+        st.download_button(
+            label="Download annotated image",
+            data=buf.getvalue(),
+            file_name=output_name,
+            mime="image/png"
+        )
 
 # ポートとアドレスの明確な指定
 if __name__ == "__main__":
