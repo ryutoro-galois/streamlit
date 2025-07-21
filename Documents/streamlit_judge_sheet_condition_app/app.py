@@ -57,19 +57,20 @@ uploaded_file = st.file_uploader(
     type=["jpg", "jpeg", "png"]
 )
 
+if uploaded_file is not None:
+    img_pil = Image.open(uploaded_file)
+    img_pil = rotate_image(img_pil)
+    file_name = uploaded_file.name
+    file_name_0, file_ext = os.path.splitext(file_name)
+    str_caption_input = f"input image: [ {file_name} ]"
+    # display uploaded image
+    st.image(img_pil, caption=str_caption_input, use_container_width=False)
+
 # 実行ボタン
-if st.button("Run Processing"):
-    if uploaded_file is not None:
-        img_pil = Image.open(uploaded_file)
-        img_pil = rotate_image(img_pil)
-        file_name = uploaded_file.name
-        file_name_0, file_ext = os.path.splitext(file_name)
-        str_caption_input = f"input image: [ {file_name} ]"
-        # display uploaded image
-        st.image(img_pil, caption=str_caption_input, use_container_width=False)
+if st.button("シート状態チェック実行"):
         # convert cv
         img_cv = convert_PIL_to_cv2(img_pil)
-
+    
         # dict_input
         #dict_input = {
         #    "test_name": "EDGE_FOLDING_CHECK", 
