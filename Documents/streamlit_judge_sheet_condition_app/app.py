@@ -37,7 +37,7 @@ Flute = st.selectbox('select Flute', ['A', 'AB', 'CB', 'B', 'C'], index=0)
 # BoxesPerBD
 min_BoxesPerBD = 5
 max_BoxesPerBD = 30
-BoxesPerBD = st.selectbox("Select BoxesPerBD:",list(range(min_BoxesPerBD, max_BoxesPerBD+1)))
+BoxesPerBD = st.selectbox("Select BoxesPerBD:",list(range(min_BoxesPerBD, max_BoxesPerBD+1)), index=6)
 
 # judge_parity
 judge_parity = st.selectbox('select judge parity', ['left', 'right'], index=0)
