@@ -31,7 +31,8 @@ uploaded_file = st.file_uploader("画像をアップロードしてください 
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
-    st.image(image, caption="画像", use_column_width=True)
+    st.image(image, caption="画像", use_column_width=False)
+    print(type(image))
 
     # dict_input
     dict_input = {
