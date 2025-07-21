@@ -31,7 +31,7 @@ uploaded_file = st.file_uploader("画像をアップロードしてください 
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
-    st.image(image, caption="画像", use_column_width=False)
+    st.image(image, caption="input image", use_container_width=False)
     img_cv = convert_PIL_to_cv2(image)
 
     # dict_input
@@ -52,7 +52,7 @@ if uploaded_file is not None:
     output_base64_image = dict_check_result["dict_output_base64_image"][annotation_type]
     output_image = base64_to_cv(output_base64_image)
 
-    st.image(output_image, caption="画像", use_column_width=False)
+    st.image(output_image, caption="output image", use_container_width=False)
 
     # ダウンロードボタンを追加
     buf = io.BytesIO()
