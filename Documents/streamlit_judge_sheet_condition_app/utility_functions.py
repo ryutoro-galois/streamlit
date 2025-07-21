@@ -82,9 +82,8 @@ def load_image(image_file_dir, dict_input):
     return img
 
 
-# name : convert_PIL_to_cv2
-def convert_PIL_to_cv2(img_pil):
-    
+# name : rotate_image
+def rotate_image(img_pil):
     for orientation in ExifTags.TAGS.keys():
         if ExifTags.TAGS[orientation] == 'Orientation':
             exif = img_pil._getexif()
@@ -97,6 +96,15 @@ def convert_PIL_to_cv2(img_pil):
                 elif orientation_value == 8:
                     img_pil = img_pil.rotate(90, expand=True)
                 break
+
+    return img_pil
+
+
+# name : convert_PIL_to_cv2
+def convert_PIL_to_cv2(img_pil):
+    
+    # 回転
+    img_pil = rotate_image(img_pil)
 
     # PIL画像をNumPy配列に変換
     np_array_img = np.array(img_pil)

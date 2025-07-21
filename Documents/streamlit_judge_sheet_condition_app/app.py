@@ -27,12 +27,18 @@ def base64_to_cv(image_base64):
 
 # Streamlitアプリのセットアップ
 st.title("段ボールシート状態チェック")
-uploaded_file = st.file_uploader("画像をアップロードしてください (jpg, jpeg, png)", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("Please upload an image (jpg, jpeg, png)", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    image = Image.open(uploaded_file)
-    st.image(image, caption="input image", use_container_width=False)
-    img_cv = convert_PIL_to_cv2(image)
+    img_pil = Image.open(uploaded_file)
+    img_pil = rotate_image(img_pil)
+    file_name = uploaded_file.name
+    file_name_0, file_ext = os.path.splitext(file_name)
+    str_caption_input = f"input image: [ {file_name} ]"
+    # display uploaded image
+    st.image(img_pil, caption=str_caption_input, use_container_width=False)
+    # convert cv
+    img_cv = convert_PIL_to_cv2(img_pil)
 
     # dict_input
     dict_input = {
@@ -52,10 +58,16 @@ if uploaded_file is not None:
     output_base64_image = dict_check_result["dict_output_base64_image"][annotation_type]
     output_image = base64_to_cv(output_base64_image)
 
+    # datetime
+    tdatetime = dt.now(timezone('Asia/Tokyo'))
+    datetime_str = tdatetime.strftime('%Y%m%d_%H%M%S')
+    output_name = f"{file_name_0}_[{annotation_type}]_{datetime_str}.png"
+    str_caption_output = f"output image: [ {output_name} ]"
+
     # NumPy配列 (OpenCV形式) をPillow形式に変換
     output_image_PIL = Image.fromarray(cv.cvtColor(output_image, cv.COLOR_BGR2RGB))
 
-    st.image(output_image_PIL, caption="output image", use_container_width=False)
+    st.image(output_image_PIL, caption=str_caption_output, use_container_width=False)
 
     # ダウンロードボタンを追加
     buf = io.BytesIO()
