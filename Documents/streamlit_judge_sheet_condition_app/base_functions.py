@@ -32,7 +32,7 @@ from utility_functions import *
 
 # read config
 #filedir = os.path.dirname(__file__)
-filedir = "/var/task"
+filedir = "."
 filename = "config_sheet_condition.yml"
 filepath = f"{filedir}/{filename}"
 with open(filepath, encoding='utf-8') as file:
