@@ -29,17 +29,31 @@ def base64_to_cv(image_base64):
 st.title("段ボールシート状態チェック")
 
 # test_name
-test_name = st.selectbox('select test name', ['EDGE_FOLDING_CHECK', 'JOINT_GAP_SIZE_CHECK'], index=1)
+test_name = st.selectbox('select test name', ['EDGE_FOLDING_CHECK', 'JOINT_GAP_SIZE_CHECK'], index=0)
 
 # Flute
-Flute = st.selectbox('select Flute', ['A', 'AB', 'CB', 'B', 'C'], index=None)
+Flute = st.selectbox('select Flute', ['A', 'AB', 'CB', 'B', 'C'], index=0)
+
+# BoxesPerBD
+min_BoxesPerBD = 5
+max_BoxesPerBD = 30
+BoxesPerBD = st.selectbox("Select BoxesPerBD:",list(range(min_BoxesPerBD+1, max_BoxesPerBD+1)))
 
 # judge_parity
-judge_parity = st.selectbox('select judge parity', ['left', 'right'], index=1)
+judge_parity = st.selectbox('select judge parity', ['left', 'right'], index=0)
 
-# annotation_type
-annotation_type = st.selectbox('select annotation type', ['1_edge_dots', '2_segmented_lines', '3_edge_dots_and_segmented_lines'], index=None)
+# is_output_annotated_image
+is_output_annotated_image = st.radio("annotate image", (True, False), index=0)
 
+# ONのときだけ表示する
+if is_output_annotated_image == True:
+    # annotation_type
+    annotation_type = st.selectbox(
+        'Select annotation type',
+        ['1_edge_dots', '2_segmented_lines', '3_edge_dots_and_segmented_lines'],
+        index=0
+    )
+    
 uploaded_file = st.file_uploader("Please upload an image (jpg, jpeg, png)", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
@@ -54,13 +68,24 @@ if uploaded_file is not None:
     img_cv = convert_PIL_to_cv2(img_pil)
 
     # dict_input
+    #dict_input = {
+    #    "test_name": "EDGE_FOLDING_CHECK", 
+    #    "Flute": "B",
+    #    "BoxesPerBD": 10,
+    #    "judge_parity": "left",
+    #    "is_output_annotated_image": True,
+    #    "annotation_type": "1_edge_dots",
+    #    "is_debug_print": True
+    #}
+
+    # dict_input
     dict_input = {
-        "test_name": "EDGE_FOLDING_CHECK", 
-        "Flute": "B",
-        "BoxesPerBD": 10,
-        "judge_parity": "left",
-        "is_output_annotated_image": True,
-        "annotation_type": "1_edge_dots",
+        "test_name": test_name,
+        "Flute": Flute,
+        "BoxesPerBD": int(BoxesPerBD),
+        "judge_parity": judge_parity,
+        "is_output_annotated_image": bool(is_output_annotated_image),
+        "annotation_type": annotation_type,
         "is_debug_print": True
     }
 
