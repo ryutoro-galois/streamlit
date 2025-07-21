@@ -48,7 +48,7 @@ if uploaded_file is not None:
     # judge_sheet_condition
     dict_check_result = judge_sheet_condition(img_cv, dict_input)
 
-    output_base64_image = dict_res["dict_output_base64_image"][annotation_type]
+    output_base64_image = dict_check_result["dict_output_base64_image"][annotation_type]
     output_image = base64_to_cv(output_base64_image)
 
     st.image(output_image, caption="画像", use_column_width=False)
