@@ -1,0 +1,129 @@
+#--------------
+#--- config ---
+#--------------
+
+# [LOGIC_LAST_UPDATED]
+LOGIC_LAST_UPDATED:
+    2025-06-02
+
+
+# [IS_DEBUG_PRINT]
+IS_DEBUG_PRINT:
+    True  # 詳細なログ出力を行う場合 
+    #False  # 詳細なログ出力を行わない場合
+
+
+# [IS_OUTPUT_ZIP_FILE]
+IS_OUTPUT_ZIP_FILE:
+    True   # 出力ファイルと同内容のzipファイルを出力する場合 
+    #False  # 出力ファイルと同内容のzipファイルを出力しない場合
+
+
+# [IMAGE_CONTRAST_ADJUSTMENT]
+IMAGE_CONTRAST_ADJUSTMENT:
+    UPPER_THRESHOLD_CV_IN_CONTRAST_ADJUSTMENT: 55.0
+
+
+# [NOISE_REMOVAL_FILTER_TYPE]
+NOISE_REMOVAL_FILTER_TYPE:
+    #NON_FILTER
+    #GAUSSIAN_FILTER
+    MEDIAN_FILTER
+    #SOBEL_FILTER
+
+
+# [TEST_NAME_OF_SHEET_CONDITION]
+TEST_NAME_OF_SHEET_CONDITION:
+    EN:
+        EDGE_FOLDING_CHECK: EDGE_FOLDING_CHECK
+        JOINT_GAP_SIZE_CHECK: JOINT_GAP_SIZE_CHECK
+    JA:
+        EDGE_FOLDING_CHECK: エッジ折れ判定
+        JOINT_GAP_SIZE_CHECK: ジョイントギャップ幅判定
+    PREFIX:
+        EDGE_FOLDING_CHECK: EDGE
+        JOINT_GAP_SIZE_CHECK: GAP
+
+
+# [EDGE_LABEL]
+EDGE_LABEL:
+    EN:
+        00_NORMAL: 00_NORMAL
+        01_INWARD_FOLD: 01_INWARD_FOLD
+        02_OUTWARD_FOLD: 02_OUTWARD_FOLD
+    JA:
+        00_NORMAL: 普通
+        01_INWARD_FOLD: 内折れ
+        02_OUTWARD_FOLD: 外折れ
+
+# [EDGE_STATUS]
+EDGE_STATUS:
+    EN:
+        01_MIX_INWARDS_AND_OUTWARDS: 01_MIX_INWARDS_AND_OUTWARDS
+        02_OVERALL_INWARDS: 02_OVERALL_INWARDS
+        03_OVERALL_OUTWARDS: 03_OVERALL_OUTWARDS
+        04_MIX_INWARDS_AND_NORMAL: 04_MIX_INWARDS_AND_NORMAL
+        05_MIX_OUTWARDS_AND_NORMAL: 05_MIX_OUTWARDS_AND_NORMAL
+        06_NORMAL: 06_NORMAL
+    JA:
+        01_MIX_INWARDS_AND_OUTWARDS: 01_外折れ、内折れが混ざる
+        02_OVERALL_INWARDS: 02_全体的に内折れ
+        03_OVERALL_OUTWARDS: 03_全体的に外折れ
+        04_MIX_INWARDS_AND_NORMAL: 04_内折れ、普通が混ざる
+        05_MIX_OUTWARDS_AND_NORMAL: 05_外折れ、普通が混ざる
+        06_NORMAL: 06_普通
+
+
+# [GAP_LABEL]
+GAP_LABEL:
+    EN:
+        00_NORMAL: 00_NORMAL # 普通 (3~9mm)
+        01_NARROW: 01_NARROW # 狭い (<3mm)
+        02_WIDE: 02_WIDE # 広い (>9mm)
+    JA: 
+        00_NORMAL: 普通 (3~9mm)
+        01_NARROW: 狭い (<3mm)
+        02_WIDE: 広い (>9mm)
+
+
+# [GAP_STATUS]
+GAP_STATUS:
+    EN:
+        01_MIX_NARROW_AND_WIDE: 01_MIX_NARROW_AND_WIDE
+        02_OVERALL_NARROW: 02_OVERALL_NARROW
+        03_OVERALL_WIDE: 03_OVERALL_WIDE
+        04_MIX_NARROW_AND_NORMAL: 04_MIX_NARROW_AND_NORMAL
+        05_MIX_WIDE_AND_NORMAL: 05_MIX_WIDE_AND_NORMAL
+        06_NORMAL: 06_NORMAL
+    JA:
+        01_MIX_NARROW_AND_WIDE: 01_狭い、広いが混ざる
+        02_OVERALL_NARROW: 02_全体的に狭い
+        03_OVERALL_WIDE: 03_全体的に広い
+        04_MIX_NARROW_AND_NORMAL: 04_狭い、普通が混ざる
+        05_MIX_WIDE_AND_NORMAL: 05_広い、普通が混ざる
+        06_NORMAL: 06_普通
+
+
+# [SHEET_THICKNESS_MILLIMETER] (Fluteごとのシートの標準的な厚みmm)
+SHEET_THICKNESS_MILLIMETER:
+    FLUTE_A: 5.0    # 5.0mm
+    FLUTE_AB: 8.0   # 8.0mm
+    FLUTE_CB: 7.0   # 7.0mm
+    FLUTE_B: 3.0    # 3.0mm
+    FLUTE_C: 4.0    # 4.0mm
+
+
+# [EDGE_MAXIMUM_TOLERANCE_MILLIMETER] (Fluteごとのエッジの最大許容誤差mm)
+# A/ABでは2mm以上、B/Cでは1.5mm以上の差があるシートを内折れ/外折れと判定する
+EDGE_MAXIMUM_TOLERANCE_MILLIMETER:
+    FLUTE_A: 2.0    # 2.0mm
+    FLUTE_AB: 2.0   # 2.0mm
+    FLUTE_CB: 2.0   # 2.0mm
+    FLUTE_B: 1.5    # 1.5mm
+    FLUTE_C: 1.5    # 1.5mm
+
+
+# GAP_SIZE_CHECK
+GAP_SIZE_CHECK:
+    GAP_SIZE_LOWER_THREHOLD_MILLIMETER: 3.0  # 3.0mm
+    GAP_SIZE_UPPER_THREHOLD_MILLIMETER: 9.0  # 9.0mm
