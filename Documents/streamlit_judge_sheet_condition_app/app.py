@@ -26,7 +26,7 @@ def base64_to_cv(image_base64):
 
 
 # Streamlitアプリのセットアップ
-st.title("アプリ")
+st.title("段ボールシート状態チェック")
 uploaded_file = st.file_uploader("画像をアップロードしてください (jpg, jpeg, png)", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
